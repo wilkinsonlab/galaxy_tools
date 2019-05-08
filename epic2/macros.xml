@@ -1,0 +1,117 @@
+<macros>
+
+    <token name="@VERSION@">1.0</token>
+    <xml name="requirements">
+        <requirements>
+            <requirement type="package" version="0.0.26">epic2</requirement>
+            <requirement type="package">htslib</requirement>
+        </requirements>
+    </xml>
+
+    <xml name="effectiveGenomeSize">
+        <param name="builtin_genome" argument="--genome" type="select" label="Genome" help="Default hg19 (--genome)" >
+            <option value="ailMel1">ailMel1</option>
+            <option value="anoCar2">anoCar2</option>
+            <option value="apiMel1">apiMel1</option>
+            <option value="aplCal1">aplCal1</option>
+            <option value="aquChr2">aquChr2</option>
+            <option value="balAcu1">balAcu1</option>
+            <option value="braFlo1">braFlo1</option>
+            <option value="calJac1">calJac1</option>
+            <option value="calJac3">calJac3</option>
+            <option value="cavPor3">cavPor3</option>
+            <option value="ce10">ce10</option>
+            <option value="ce11">ce11</option>
+            <option value="cerSim1">cerSim1</option>
+            <option value="chlSab2">chlSab2</option>
+            <option value="chrPic1">chrPic1</option>
+            <option value="danRer10">danRer10</option>
+            <option value="danRer3">danRer3</option>
+            <option value="danRer4">danRer4</option>
+            <option value="danRer5">danRer5</option>
+            <option value="danRer6">danRer6</option>
+            <option value="danRer7">danRer7</option>
+            <option value="dm3">dm3</option>
+            <option value="dm6">dm6</option>
+            <option value="echTel2">echTel2</option>
+            <option value="equCab1">equCab1</option>
+            <option value="equCab2">equCab2</option>
+            <option value="eriEur1">eriEur1</option>
+            <option value="eriEur2">eriEur2</option>
+            <option value="fr1">fr1</option>
+            <option value="fr2">fr2</option>
+            <option value="galVar1">galVar1</option>
+            <option value="gasAcu1">gasAcu1</option>
+            <option value="geoFor1">geoFor1</option>
+            <option value="gorGor3">gorGor3</option>
+            <option value="gorGor4">gorGor4</option>
+            <option value="gorGor5">gorGor5</option>
+            <option value="hetGla1">hetGla1</option>
+            <option value="hetGla2">hetGla2</option>
+            <option value="hg18">hg18</option>
+            <option value="hg19" selected="true">hg19</option>
+            <option value="hg38">hg38</option>
+            <option value="loxAfr3">loxAfr3</option>
+            <option value="macEug2">macEug2</option>
+            <option value="melGal1">melGal1</option>
+            <option value="melGal5">melGal5</option>
+            <option value="micMur2">micMur2</option>
+            <option value="mm10">mm10</option>
+            <option value="mm9">mm9</option>
+            <option value="monDom4">monDom4</option>
+            <option value="monDom5">monDom5</option>
+            <option value="myoLuc2">myoLuc2</option>
+            <option value="nanPar1">nanPar1</option>
+            <option value="nasLar1">nasLar1</option>
+            <option value="nomLeu1">nomLeu1</option>
+            <option value="nomLeu2">nomLeu2</option>
+            <option value="nomLeu3">nomLeu3</option>
+            <option value="ochPri3">ochPri3</option>
+            <option value="oreNil2">oreNil2</option>
+            <option value="ornAna1">ornAna1</option>
+            <option value="ornAna2">ornAna2</option>
+            <option value="oryCun2">oryCun2</option>
+            <option value="oryLat2">oryLat2</option>
+            <option value="oviAri1">oviAri1</option>
+            <option value="oviAri3">oviAri3</option>
+            <option value="papAnu2">papAnu2</option>
+            <option value="petMar1">petMar1</option>
+            <option value="petMar2">petMar2</option>
+            <option value="ponAbe2">ponAbe2</option>
+            <option value="priPac1">priPac1</option>
+            <option value="rheMac2">rheMac2</option>
+            <option value="rheMac3">rheMac3</option>
+            <option value="rheMac8">rheMac8</option>
+            <option value="rhiRox1">rhiRox1</option>
+            <option value="rn4">rn4</option>
+            <option value="rn5">rn5</option>
+            <option value="rn6">rn6</option>
+            <option value="sacCer1">sacCer1</option>
+            <option value="sacCer2">sacCer2</option>
+            <option value="sacCer3">sacCer3</option>
+            <option value="saiBol1">saiBol1</option>
+            <option value="sorAra2">sorAra2</option>
+            <option value="speTri2">speTri2</option>
+            <option value="strPur1">strPur1</option>
+            <option value="strPur2">strPur2</option>
+            <option value="susScr2">susScr2</option>
+            <option value="susScr3">susScr3</option>
+            <option value="taeGut1">taeGut1</option>
+            <option value="taeGut2">taeGut2</option>
+            <option value="tarSyr2">tarSyr2</option>
+            <option value="tetNig1">tetNig1</option>
+            <option value="tetNig2">tetNig2</option>
+            <option value="triMan1">triMan1</option>
+            <option value="xenTro3">xenTro3</option>
+            <option value="xenTro7">xenTro7</option>
+        </param>
+    </xml>
+
+    <xml name="citations">
+        <citations>
+            <citation type="doi">0.1093/bioinformatics/btz232</citation>
+            <yield />
+        </citations>
+    </xml>
+
+</macros>
