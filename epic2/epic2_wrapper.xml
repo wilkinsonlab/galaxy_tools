@@ -1,4 +1,4 @@
-<tool id="epic2" name="epic2" version="@VERSION@.0">
+<tool id="epic2" name="epic2" version="@VERSION@">
     <description>peak calling of broad ChIP-Seq marks</description>
     <macros>
         <import>macros.xml</import>
@@ -160,12 +160,16 @@
             --original-algorithm
         #end if
 
+        #if $advanced_options.original_stats:
+            --original-statistics
+        #end if
+
         > ${peaks} 
         2> >(awk 'NF' >&2)
 
         #if $to_bed:
             && 
-            awk 'NR>1{if ($4==0) {pv=50;qv=50}else{pv=-log($4)/log(10);qv=-log($9)/log(10)};
+            awk 'NR>1{if ($4==0) {pv=500;qv=500}else{pv=-log($4)/log(10);qv=-log($9)/log(10)};
             print $1,$2,$3,"island_"NR-1,int($5),$6,$10,pv,qv}' OFS="\t" ${peaks} > ${bed_peaks}
         #end if
 
@@ -178,10 +182,12 @@
                 <option value="Yes">Yes</option>
             </param>
             <when value="No" >
-                <param name="input_treatment_file" argument="-t" type="data" format="bam,sam,bed" label="ChIP-Seq Treatment File" help="(-t)" />
+                <param name="input_treatment_file" argument="-t" type="data" 
+                       format="bam,sam,bed" label="ChIP-Seq Treatment File" help="(-t)" />
             </when>
             <when value="Yes">
-                <param name="input_treatment_file" argument="-t" type="data" format="bam,sam,bed" multiple="true" 
+                <param name="input_treatment_file" argument="-t" type="data" 
+                       format="bam,sam,bed" multiple="true" 
                        label="ChIP-Seq Treatment File" help="(-t)" />
             </when>
         </conditional>
@@ -193,23 +199,29 @@
             </param>
             <when value="Yes">
                 <conditional name="c_multiple">
-                    <param name="c_multi_select" type="select" label="Are you pooling Control Files?" help="" >
+                    <param name="c_multi_select" type="select" 
+                           label="Are you pooling Control Files?" help="" >
                         <option value="No" selected="True">No</option>
                         <option value="Yes">Yes</option>
                     </param>
                     <when value="No" >
-                        <param name="input_control_file" argument="-c" type="data" format="bam,sam,bed" label="ChIP-Seq Control File" help="(-c)" />
+                        <param name="input_control_file" argument="-c" type="data" 
+                               format="bam,sam,bed" label="ChIP-Seq Control File" 
+                               help="(-c)" />
                     </when>
                     <when value="Yes">
-                        <param name="input_control_file" argument="-c" type="data" format="bam,sam,bed" multiple="true" 
+                        <param name="input_control_file" argument="-c" type="data" 
+                               format="bam,sam,bed" multiple="true" 
                                label="ChIP-Seq Control File" help="(-c)" />
                     </when>
                 </conditional>
             </when>
             <when value="No">
-                <param name="evalue" argument="-e" type="integer" optional="True" label="e-value" 
-                       help="The E-value controls the genome-wide error rate of identified islands under the random 
-                             background assumption. Should be used when not using a control library. Default 1000." />
+                <param name="evalue" argument="-e" type="integer" optional="True" 
+                       label="e-value" help="The E-value controls the genome-wide error 
+                             rate of identified islands under the random 
+                             background assumption. Should be used when not using 
+                             a control library. Default 1000." />
             </when>
         </conditional>
 
@@ -220,23 +232,30 @@
             </param>
             <when value="Yes">
                 <expand macro="effectiveGenomeSize" />
-                <param name="egf" argument="-egf" type="float" min="0" max="1" optional="True" label="Effective genome fraction" 
-                       help="Use a different effective genome fraction than the one included in epic2, which depends on genome and readlength. (-egf)" />
+                <param name="egf" argument="-egf" type="float" min="0" max="1" 
+                       optional="True" label="Effective genome fraction" 
+                       help="Use a different effective genome fraction than the 
+                             one included in epic2, which depends on genome and
+                             readlength. (-egf)" />
             </when>
             <when value="No">
                 <conditional name="chromsizes">
-                    <param name="chr_select" type="select" label="Do you want to use an indexed fasta file?" 
+                    <param name="chr_select" type="select" label="Use an indexed fasta file?" 
                            help="Chromosome sizes will be calculated from the provided fasta file." >
                         <option value="No">No</option>
                         <option value="Yes" selected="True">Yes</option>
                     </param>
                     <when value="No" >
-                        <param name="cs_file" argument="--chromsizes" type="data" format="fasta,txt,tabular,tsv" label="Chromosome sizes" 
-                               help="Provide a fasta file for automated calculation, or a tab-separated file with 
-                                     two columns: chromosome names and sizes. (--chromsizes)" />
+                        <param name="cs_file" argument="--chromsizes" type="data" 
+                               format="fasta,txt,tabular,tsv" label="Chromosome sizes" 
+                               help="Provide a fasta file for automated calculation, 
+                                     or a tab-separated file with two columns: 
+                                     chromosome names and sizes. (--chromsizes)" />
                     </when>
                     <when value="Yes">
-                        <param name="builtin_fasta" argument="--chromsizes" type="select" optional="True" label="Genome for fasta file" help="(--chromsizes)" >
+                        <param name="builtin_fasta" argument="--chromsizes" type="select" 
+                               optional="True" label="Genome for fasta file" 
+                               help="(--chromsizes)" >
                             <options from_data_table="fasta_indexes">
                                 <filter type="sort_by" column="2" />
                                 <validator type="no_options" message="No indexes are available" />
@@ -244,26 +263,38 @@
                         </param>
                     </when>
                 </conditional>
-                <param name="egf" argument="-egf" type="float" min="0" max="1" optional="True" label="Effective genome fraction" 
-                       help="The effective genome fraction is the proportion of the genome that is mappable, excluding Ns. (-egf)" />
+                <param name="egf" argument="-egf" type="float" min="0" max="1" 
+                       optional="True" label="Effective genome fraction" 
+                       help="The effective genome fraction is the proportion 
+                             of the genome that is mappable, excluding Ns. (-egf)" />
             </when>
         </conditional>
 
-            <param name="fdr" argument="-fdr" type="float" min="0" max="1" optional="True" label="False discovery rate cutoff" 
+            <param name="fdr" argument="-fdr" type="float" min="0" max="1" 
+                   optional="True" label="False discovery rate cutoff" 
                    help="Remove all islands with an FDR above cutoff. Default 0.05 (-fdr)" />
 
-            <param name="to_bed" type="boolean" checked="false" label="Print output in bed format?"/>
+            <param name="to_bed" type="boolean" checked="false" label="Convert output to BED format?"/>
 
         <section name="bam_options" title="BAM Options">
-            <param name="required_flag" argument="--required-flag" type="integer" optional="True" label="Required flag" 
-                   help="Keep reads with these bits set in flag. Same as `samtools view -f`. Default 0. (--required-flag)" />
-            <param name="filter_flag" argument="--filter-flag" type="integer" optional="True" label="Filter flag" 
-                   help="Discard reads with these bits set in flag. Same as `samtools view -F`. Default 1540 (hex: 0x604). (--filter-flag)" />
-            <param name="mapq" argument="--mapq" type="integer" optional="True" label="Mapping quality" 
+            <param name="required_flag" argument="--required-flag" type="integer" 
+                   optional="True" label="Required flag" 
+                   help="Keep reads with these bits set in flag. Same as `samtools 
+                         view -f`. Default 0. (--required-flag)" />
+            <param name="filter_flag" argument="--filter-flag" type="integer" 
+                   optional="True" label="Filter flag" 
+                   help="Discard reads with these bits set in flag. Same as `samtools 
+                         view -F`. Default 1540 (hex: 0x604). (--filter-flag)" />
+            <param name="mapq" argument="--mapq" type="integer" 
+                   optional="True" label="Mapping quality" 
                    help="Discard reads with mapping quality lower than this. Default 5. (--mapq)" />
-            <param name="autodetect_chroms" type="boolean" checked="false" truevalue="--autodetect-chroms" falsevalue="" label="Autodetect chromosomes?" 
-                   help="Autodetect chromosomes from bam file. Use with --discard-chromosomes flag to avoid non-canonical chromosomes. (--autodetect-chroms)" />
-            <param name="discard_chroms" argument="--discard-chromosomes-pattern" type="text" optional="True" label="Discard chromosomes pattern" 
+            <param name="autodetect_chroms" type="boolean" checked="false" 
+                   truevalue="--autodetect-chroms" falsevalue="" label="Autodetect chromosomes?" 
+                   help="Autodetect chromosomes from bam file. Use with 
+                         --discard-chromosomes flag to avoid non-canonical 
+                         chromosomes. (--autodetect-chroms)" />
+            <param name="discard_chroms" argument="--discard-chromosomes-pattern" 
+                   type="text" optional="True" label="Discard chromosomes pattern" 
                    help="Discard reads from chromosomes matching
                         this pattern. Default '_'. Note that if you are not
                         interested in the results from non-canonical
@@ -273,20 +304,38 @@
         </section>
         
         <section name="advanced_options" title="Advanced Options">
-            <param name="keep_dupes" type="boolean" checked="false" truevalue="--keep-duplicates" falsevalue="" label="Keep duplicates?" 
-                   help="Keep reads mapping to the same position on the same strand within a library. (--keep-duplicates)" />
-            <param name="bin_size" argument="--bin-size" type="integer" optional="True" label="Bin size" 
-                   help="Size of the windows to scan the genome. BIN-SIZE is the smallest possible island. Default 200. (--bin-size)" />
-            <param name="gaps_allowed" argument="--gaps-allowed" type="integer" optional="True" label="Gaps allowed" 
-                   help="This number is multiplied by the window size to determine the number of gaps (ineligible windows) allowed 
+            <param name="keep_dupes" type="boolean" checked="false" 
+                   truevalue="--keep-duplicates" falsevalue="" label="Keep duplicates?" 
+                   help="Keep reads mapping to the same position on the same 
+                         strand within a library. (--keep-duplicates)" />
+            <param name="bin_size" argument="--bin-size" type="integer" 
+                   optional="True" label="Bin size" 
+                   help="Size of the windows to scan the genome. BIN-SIZE is the 
+                         smallest possible island. Default 200. (--bin-size)" />
+            <param name="gaps_allowed" argument="--gaps-allowed" type="integer" 
+                   optional="True" label="Gaps allowed" 
+                   help="This number is multiplied by the window size to determine 
+                         the number of gaps (ineligible windows) allowed 
                          between two eligible windows. Default 3. (--gaps-allowed)"/>
-            <param name="fragment_size" argument="--fragment-size" type="integer" optional="True" label="Fragment size" 
-                   help="(Single end reads only) Size of the sequenced fragment. Each read is extended half the fragment size from the 5' end. 
+            <param name="fragment_size" argument="--fragment-size" type="integer" 
+                   optional="True" label="Fragment size" 
+                   help="(Single end reads only) Size of the sequenced fragment. 
+                         Each read is extended half the fragment size from the 5' end. 
                          Default 150 (i.e. extend by 75). (--fragment-size)" />
-            <param name="original_algorithm" type="boolean" checked="false" truevalue="--original-algorithm" falsevalue="" 
+            <param name="original_algorithm" type="boolean" checked="false" 
+                   truevalue="--original-algorithm" falsevalue="" 
                    label="Compute p-values with SICER original algorithm?" 
-                   help="Use the original SICER algorithm, without the epic2 fix. This will use all reads in your files to compute
-                        the p-values, including those falling outside the genome boundaries. (--original-algorithm)" />
+                   help="Use the original SICER algorithm, without the epic2 fix. 
+                        This will use all reads in your files to compute
+                        the p-values, including those falling outside the
+                        genome boundaries. (--original-algorithm)" />
+            <param name="original_stats" type="boolean" checked="false" 
+                   truevalue="--original-statistics" falsevalue="" 
+                   label="Compute p-values with SICER original algorithm?" 
+                   help="Use the original SICER way of computing the
+                        statistics. Like SICER itself, this method raises an
+                        error on large datasets. Only included for debugging-
+                        purposes. (--original-statistics)" />
         </section>
    </inputs>
 
@@ -340,15 +389,19 @@
     </tests>
 
     <help>
-Chip-Seq broad peak/domain finder based on SICER.
+epic2 is an ultraperformant reimplementation of SICER, a Chip-Seq broad peak/diffuse domain finder. 
+epic2 is focused on speed, low memory overhead and ease-of-use.
+ Software documentation may be found on https://github.com/biocore-ntnu/epic2.
 
-**Accepted input formats**
+**Accepted input**
 
-Input file extension must be bed, bedpe, bam or sam.
+epic2 is designed to be used with ChIP-Seq data from treatment samples, though control samples are encouraged to increase specificity. Single or multiple files are allowed as input, with same or different file formats (file extension must be bed, bedpe, bam or sam). To use multiple files as input (either as treatment or control samples), group them in a collection and select to pool files, otherwise Galaxy will run them in batch mode.
+
+epic2 works with only a treatment file specified as input. In this case, epic2 will run with default parameters, using the pre-indexed human genome hg19 and a FDR cutoff of 0.05. Several genomes are indexed and included on the installation of epic2, although custom genomes may be used. If your genome is not already indexed, two options are provided. One of them is to select a fasta file from which calculate chromosome sizes; the second option is to provide a tab-separated list with one chromosome name and length per row. On custom genomes, the effective genome fraction may be introduced (for more information see [deepTools](https://deeptools.readthedocs.io/en/latest/content/feature/effectiveGenomeSize.html)).
 
 **Broad peaks format**
-        
-Original epic2 output does not follow any standard format, then broad peaks bed format is offered. This format follows the standard from ENCODE, BED 6 + 3, and contains the following columns:
+
+The output of epic2 contains called peaks in a table that does not follow any standard format. This table may be converted to BED format, assigning a unique name to each peak (islands). This format follows the standard from ENCODE, BED 6+3, and contains the following columns:
         
         * **1.** Chrom 
         * **2.** Start 
@@ -362,9 +415,9 @@ Original epic2 output does not follow any standard format, then broad peaks bed 
         
 .. class:: warningmark
 
-        On columns 8 and 9, the max value is set to 50 when Pvalue == 0.0.
+        On columns 8 and 9, the max value is set to 500 when Pvalue == 0.0.
 
-Tool adapted to Galaxy by Miriam Payá Milans. Original documentation on https://github.com/biocore-ntnu/epic2.
+Tool adapted to Galaxy by Miriam Payá.
         
         
     </help>

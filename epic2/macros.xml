@@ -1,11 +1,18 @@
 <macros>
 
-    <token name="@VERSION@">1.0</token>
+    <token name="@VERSION@">0.0.41</token>
     <xml name="requirements">
         <requirements>
-            <requirement type="package" version="0.0.26">epic2</requirement>
+            <requirement type="package" version="0.0.41">epic2</requirement>
             <requirement type="package">htslib</requirement>
         </requirements>
+    </xml>
+
+    <xml name="citations">
+        <citations>
+            <citation type="doi">10.1093/bioinformatics/btz232</citation>
+            <yield />
+        </citations>
     </xml>
 
     <xml name="effectiveGenomeSize">
@@ -105,13 +112,6 @@
             <option value="xenTro3">xenTro3</option>
             <option value="xenTro7">xenTro7</option>
         </param>
-    </xml>
-
-    <xml name="citations">
-        <citations>
-            <citation type="doi">10.1093/bioinformatics/btz232</citation>
-            <yield />
-        </citations>
     </xml>
 
 </macros>
